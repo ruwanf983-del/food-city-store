@@ -18,6 +18,13 @@ const filteredProducts = computed(() => {
     p.title.toLowerCase().includes(search.value.toLowerCase())
   );
 });
+
+const loading = ref(true);
+
+onMounted(async () => {
+  products.value = await getProducts();
+  loading.value = false;
+});
 </script>
 
 <template>
@@ -34,24 +41,31 @@ const filteredProducts = computed(() => {
     />
 
     <!-- Products Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
       
       <div
         v-for="product in filteredProducts"
         :key="product.id"
-        class="border p-4 rounded shadow bg-white"
+        class="border p-4 rounded-xl shadow bg-white 
+         transform hover:scale-105 hover:shadow-xl 
+         transition duration-300"
       >
         <!-- Product Image -->
+        <router-link :to="`/product/${product.id}`">
         <img
           :src="product.thumbnail"
-          class="w-full h-40 object-cover rounded"
-        />
-
+          class="w-full h-40 object-cover rounded cursor-pointer"
+         />
+        </router-link>
+        
         <!-- Product Title -->
-        <h2 class="font-bold mt-2">
-          {{ product.title }}
-        </h2>
-
+         <router-link
+         :to="`/product/${product.id}`"
+         class="block font-bold mt-2 hover:underline"
+   >
+        {{ product.title }}
+        </router-link>
+        
         <!-- Price -->
         <p class="text-green-600 font-bold">
           ${{ product.price }}
@@ -59,11 +73,15 @@ const filteredProducts = computed(() => {
 
         <!-- Add to Cart Button -->
         <button
-          @click="cart.addToCart(product)"
-          class="bg-green-500 text-white px-3 py-1 rounded mt-2 w-full hover:bg-green-600 transition"
+          @click="cart.addToCart(product); alert('Added to cart!')"
+          class="bg-green-500 text-white px-3 py-2 rounded mt-2 w-full hover:bg-green-600 transition font-semibold"
         >
           Add to Cart 🛒
         </button>
+
+        <div v-if="loading" class="text-center text-gray-500">
+  Loading products...
+</div>
       </div>
 
     </div>
