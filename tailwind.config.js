@@ -1,4 +1,5 @@
 export default {
+  darkMode: "class", // ✅ IMPORTANT
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -7,4 +8,4 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+};

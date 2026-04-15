@@ -3,6 +3,9 @@ import { useCartStore } from "../store/cart";
 import { useAuthStore } from "../store/auth";
 import { useThemeStore } from "../store/theme";
 import { useRouter } from "vue-router";
+import { ref, watchEffect } from "vue";
+
+const isDark = ref(false);
 
 const cart = useCartStore();
 const auth = useAuthStore();
@@ -13,6 +16,13 @@ function logout() {
   auth.logout();
   router.push("/login");
 }
+watchEffect(() => {
+  if (isDark.value) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+});
 </script>
 
 <template>
@@ -41,12 +51,12 @@ function logout() {
       </router-link>
 
       <!-- Dark Mode Toggle -->
-      <button
-        @click="theme.toggleTheme()"
-        class="px-3 py-1 rounded bg-black/20 hover:bg-black/30 transition"
-      >
-        🌙
-      </button>
+       <button
+    @click="isDark = !isDark"
+    class="px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 dark:text-white"
+  >
+    {{ isDark ? "☀ Light Mode" : "🌙 Dark Mode" }}
+  </button>
 
       <!-- Auth Section -->
       <router-link

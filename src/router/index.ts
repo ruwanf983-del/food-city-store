@@ -7,19 +7,34 @@ import ProductView from "../views/ProductView.vue";
 const routes = [
   {
     path: "/",
+    name: "Home",
     component: HomeView,
   },
-  { 
+  {
     path: "/product/:id",
-     component: ProductView 
+    name: "Product",
+    component: ProductView,
   },
   {
     path: "/cart",
+    name: "Cart",
     component: CartView,
   },
-  { 
+  {
     path: "/checkout",
-    component: CheckoutView 
+    name: "Checkout",
+    component: CheckoutView,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
+  },
+
+  // 🔥 IMPORTANT: fallback route
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/",
   },
 ];
 

@@ -4,48 +4,53 @@ import { useCartStore } from "../store/cart";
 
 const cart = useCartStore();
 
-// Form fields
+// FORM
 const name = ref("");
-const address = ref("");
 const phone = ref("");
+const address = ref("");
 
-// Order state
+// ORDER STATE
 const orderPlaced = ref(false);
-const orderItems = ref<any[]>([]);
+const order = ref<any>(null);
 
-// Cart total (before order)
-const totalPrice = computed(() => {
-  return cart.items.reduce(
+// TOTAL
+const totalPrice = computed(() =>
+  cart.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
-  );
-});
+  )
+);
 
-// Order total (after order)
-const orderTotal = computed(() => {
-  return orderItems.value.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-});
-
-// Place order
-const placeOrder = () => {
-  if (!name.value || !address.value || !phone.value) {
-    alert("Please fill all fields!");
+// PLACE ORDER
+function placeOrder() {
+  // validation
+  if (!name.value || !phone.value || !address.value) {
+    alert("Please fill all details!");
     return;
   }
 
-  // Save items BEFORE clearing cart
-  orderItems.value = [...cart.items];
+  if (cart.items.length === 0) {
+    alert("Cart is empty!");
+    return;
+  }
 
-  // Show confirmation
+  // 🔥 IMPORTANT: SAVE SNAPSHOT BEFORE CLEARING
+  order.value = {
+    customer: {
+      name: name.value,
+      phone: phone.value,
+      address: address.value,
+    },
+    items: JSON.parse(JSON.stringify(cart.items)),
+    total: totalPrice.value,
+  };
+
+  // show order
   orderPlaced.value = true;
 
-  // Clear cart
-  cart.items = [];
-  cart.saveCart();
-};
+  // clear cart AFTER saving
+  cart.clearCart();
+}
 </script>
 
 <template>
@@ -54,103 +59,111 @@ const placeOrder = () => {
     <!-- BEFORE ORDER -->
     <div v-if="!orderPlaced">
 
-      <h1 class="text-2xl font-bold mb-6">🧾 Checkout</h1>
+      <h1 class="text-2xl font-bold mb-4">
+        🧾 Checkout
+      </h1>
 
       <div class="grid md:grid-cols-2 gap-6">
 
         <!-- FORM -->
-        <div class="border p-4 rounded shadow bg-white">
-          <h2 class="font-bold mb-4">Customer Details</h2>
+        <div class="border p-4 rounded">
 
-          <input
-            v-model="name"
-            placeholder="Full Name"
-            class="border p-2 w-full mb-3 rounded"
-          />
+          <input v-model="name"
+            placeholder="Name"
+            class="border p-2 w-full mb-2" />
 
-          <input
-            v-model="phone"
-            placeholder="Phone Number"
-            class="border p-2 w-full mb-3 rounded"
-          />
+          <input v-model="phone"
+            placeholder="Phone"
+            class="border p-2 w-full mb-2" />
 
-          <textarea
-            v-model="address"
-            placeholder="Delivery Address"
-            class="border p-2 w-full mb-3 rounded"
-          ></textarea>
+          <textarea v-model="address"
+            placeholder="Address"
+            class="border p-2 w-full mb-2"></textarea>
 
           <button
             @click="placeOrder"
-            class="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600"
+            class="bg-green-500 text-white px-4 py-2 w-full"
           >
             Place Order
           </button>
+
         </div>
 
         <!-- ORDER PREVIEW -->
-        <div class="border p-4 rounded shadow bg-white">
-          <h2 class="font-bold mb-4">Order Preview</h2>
+        <div class="border p-4">
+
+          <h2 class="font-bold mb-3">
+            Order Preview
+          </h2>
 
           <div
             v-for="item in cart.items"
             :key="item.id"
             class="flex justify-between mb-2"
           >
-            <span>{{ item.title }} (x{{ item.quantity }})</span>
-            <span>${{ item.price * item.quantity }}</span>
+            <span>
+              {{ item.title }} (x{{ item.quantity }})
+            </span>
+
+            <span>
+              ${{ item.price * item.quantity }}
+            </span>
           </div>
 
-          <hr class="my-4" />
+          <hr class="my-3" />
 
-          <h2 class="text-xl font-bold text-right">
+          <h2 class="text-right font-bold">
             Total: ${{ totalPrice.toFixed(2) }}
           </h2>
+
         </div>
 
       </div>
-
     </div>
 
     <!-- AFTER ORDER -->
     <div v-else class="text-center">
 
-      <h1 class="text-3xl font-bold text-green-600 mb-4">
+      <h1 class="text-3xl font-bold text-green-600">
         🎉 Order Confirmed!
       </h1>
 
-      <p class="mb-4 text-gray-600">
-        Thank you, {{ name }}!
-      </p>
+      <!-- CUSTOMER DETAILS -->
+      <div class="border p-4 mt-4 max-w-md mx-auto text-left">
 
-      <div class="border p-4 rounded shadow bg-white max-w-md mx-auto text-left">
-        <h2 class="font-bold mb-3">🧾 Order Details</h2>
-
-        <p><strong>Name:</strong> {{ name }}</p>
-        <p><strong>Phone:</strong> {{ phone }}</p>
-        <p><strong>Address:</strong> {{ address }}</p>
+        <p><b>Name:</b> {{ order.customer.name }}</p>
+        <p><b>Phone:</b> {{ order.customer.phone }}</p>
+        <p><b>Address:</b> {{ order.customer.address }}</p>
 
         <hr class="my-3" />
 
+        <!-- ORDERED LIST -->
         <div
-          v-for="item in orderItems"
+          v-for="item in order.items"
           :key="item.id"
           class="flex justify-between mb-2"
         >
-          <span>{{ item.title }} (x{{ item.quantity }})</span>
-          <span>${{ item.price * item.quantity }}</span>
+          <span>
+            {{ item.title }} (x{{ item.quantity }})
+          </span>
+
+          <span>
+            ${{ item.price * item.quantity }}
+          </span>
         </div>
 
         <hr class="my-3" />
 
-        <h2 class="text-xl font-bold text-right">
-          Total: ${{ orderTotal.toFixed(2) }}
+        <!-- TOTAL -->
+        <h2 class="text-right font-bold text-lg">
+          Total: ${{ order.total.toFixed(2) }}
         </h2>
+
       </div>
 
       <router-link
         to="/"
-        class="mt-6 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        class="mt-6 inline-block bg-green-500 text-white px-4 py-2 rounded"
       >
         Back to Home
       </router-link>

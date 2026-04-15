@@ -3,6 +3,10 @@ import { computed } from "vue";
 import { useCartStore } from "../store/cart";
 
 const cart = useCartStore();
+function clearCart() {
+  cart.items = [];
+  cart.saveCart();
+}
 
 const totalPrice = computed(() => {
   return cart.items.reduce(
@@ -44,7 +48,11 @@ const totalPrice = computed(() => {
   class="flex items-center justify-between border p-4 rounded"
 >
   <div class="flex items-center gap-4">
-    <img :src="product.thumbnail" alt="Product Image" />
+    <img
+  :src="item.thumbnail"
+  alt="Product Image"
+  class="w-20 h-20 object-cover"
+/>
 
     <div>
       <h2 class="font-bold">{{ item.title }}</h2>
@@ -88,11 +96,21 @@ const totalPrice = computed(() => {
   </h2>
 
   <button
-    @click="cart.items = []; cart.saveCart()"
-    class="mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+  @click="cart.clearCart()"
+  class="mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+>
+  Clear Cart
+</button>
+ <!-- 🟢 CHECKOUT BUTTON (NEW) -->
+  <router-link
+    to="/checkout"
+    v-if="cart.items.length > 0"
+    class="mt-3 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 ml-2"
   >
-    Clear Cart
-  </button>
+    Proceed to Checkout
+  </router-link>
+
+      
 </div>
 
     </div>
