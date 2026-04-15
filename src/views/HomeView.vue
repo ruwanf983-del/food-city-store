@@ -52,10 +52,7 @@ onMounted(async () => {
       >
         <!-- Product Image -->
         <router-link :to="`/product/${product.id}`">
-        <img
-          :src="product.thumbnail"
-          class="w-full h-40 object-cover rounded cursor-pointer"
-         />
+        <img :src="product.thumbnail" alt="Product Image" />
         </router-link>
         
         <!-- Product Title -->

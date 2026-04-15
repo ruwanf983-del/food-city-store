@@ -44,10 +44,7 @@ const totalPrice = computed(() => {
   class="flex items-center justify-between border p-4 rounded"
 >
   <div class="flex items-center gap-4">
-    <img
-      :src="item.thumbnail"
-      class="w-16 h-16 object-cover rounded"
-    />
+    <img :src="product.thumbnail" alt="Product Image" />
 
     <div>
       <h2 class="font-bold">{{ item.title }}</h2>
