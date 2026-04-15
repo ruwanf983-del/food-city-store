@@ -20,10 +20,7 @@ onMounted(async () => {
     <div class="grid md:grid-cols-2 gap-6">
 
       <!-- IMAGE -->
-      <img
-        :src="product.thumbnail"
-        class="w-full rounded shadow"
-      />
+      <img :src="product.thumbnail" alt="Product Image" />
 
       <!-- DETAILS -->
       <div>
