@@ -1,142 +1,108 @@
-# Vue 3 + TypeScript + Vite
+# Food City Store (Vue 3 E-Commerce SPA)
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A modern **single-page e-commerce application** built using:
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+- Vue 3 (Composition API)
+- TypeScript
+- Pinia (State Management)
+- Vue Router
+- Tailwind CSS
+- DummyJSON API
 
 
-# 🍔 Food City E-Commerce SPA
 
-## Project Overview
+## Features
 
-This project is a 'Single Page Application (SPA)' built using 'Vue 3, TypeScript, and Tailwind CSS'.
-It simulates an online food store where users can browse products, search items, and manage a shopping cart.
+### Product Features
+- Product listing from API
+- Product details page
+- Add to cart functionality
+- Quantity increase/decrease
+- Remove items from cart
 
----
+### Cart System
+- Add / Remove products
+- Persist cart using LocalStorage
+- Total price calculation
+- Clear cart feature
+- Proceed to checkout flow
 
-## Live Demo
+### Checkout System
+- Customer details form (Name, Phone, Address)
+- Order preview before confirmation
+- Order confirmation page
+- Ordered items summary
+- Total price display
 
-🔗 https://steady-panda-4e51a6.netlify.app/
+### Dark Mode
+- Toggle dark/light mode
+- Tailwind CSS dark mode support
+- UI theme switching
+
+### Authentication (UI Ready)
+- Login page UI
+- Logout button (UI structure)
 
 ---
 
 ## Tech Stack
 
-* Vue 3 (Composition API)
-* TypeScript
-* Tailwind CSS
-* Pinia (State Management)
-* Vue Router
-* Axios
-* Vite
-* DummyJSON API
+- Vue 3
+- TypeScript
+- Pinia
+- Vue Router
+- Tailwind CSS
+- Axios
+- DummyJSON API
 
 ---
 
-## Features
+## Project Setup
 
-* Product listing from API
-* Search functionality
-* Responsive design
-* Shopping cart system
-* Add to cart
-* Remove from cart
-* Cart item counter
-* Persistent cart (localStorage)
-* SPA Routing (Vue Router)
-
----
-
-## Project Structure
-
-```
-src/
- ├── components/
- │     └── NavBar.vue
- ├── views/
- │     ├── HomeView.vue
- │     ├── CartView.vue
- │     └── ProductView.vue
- ├── router/
- │     └── index.ts
- ├── store/
- │     └── cart.ts
- ├── services/
- │     └── api.ts
- └── types/
-       └── Product.ts
-```
-
----
-
-## Installation & Setup
-
-### 1️⃣ Clone the repository
-
-```bash
-git clone https://github.com/yourusername/food-city-store.git
-cd food-city-store
-```
-
-### 2️⃣ Install dependencies
-
-```bash
+### 1. Install dependencies
 npm install
-```
 
-### 3️⃣ Run development server
-
-```bash
+### 2. Run development server
 npm run dev
-```
 
-### 4️⃣ Build for production
-
-```bash
+### 3. Build for production
 npm run build
-```
 
----
+# Project Structure
 
-## API Used
+src/
+ ├── assets/
+ ├── components/
+ ├── views/
+ │    ├── HomeView.vue
+ │    ├── ProductView.vue
+ │    ├── CartView.vue
+ │    ├── CheckoutView.vue
+ │    ├── Login.vue
+ ├── store/
+ │    └── cart.ts
+ ├── router/
+ │    └── index.ts
+ ├── types/
+ ├── main.ts
 
-Data is fetched from:
-    https://dummyjson.com/products
+# How Checkout Works
+     1. Add products to cart
+     2. Go to Cart page
+     3. Click Proceed to Checkout
+     4. Fill customer details
+     5. Click Place Order
+     6. View order summary with:
+     7. Customer details
+     8. Ordered items
+     9. Total price
 
----
+# API Used
+https://dummyjson.com/products
 
-## State Management
-
-Pinia is used to manage the shopping cart globally across components.
-
----
-
-## Deployment
-
-This project is deployed using 'Netlify'.
-
----
-
-## Challenges Faced
-
-* Tailwind CSS setup issues
-* Pinia initialization errors
-* Vue Router deployment (404 issue on refresh)
-
----
-
-## Solutions
-
-* Fixed Tailwind configuration
-* Corrected Pinia lifecycle usage
-* Added `_redirects` file for Netlify SPA routing
-
----
-
-## Conclusion
-
-This project demonstrates a modern frontend architecture using Vue 3 and TypeScript.
-It successfully implements core e-commerce functionality with a clean and responsive UI.
-
----
-
+# Future Improvements
+    - Firebase Authentication
+    - Real payment integration
+    - Order history page
+    - Admin dashboard
+    - Backend API (Node.js + MongoDB)
