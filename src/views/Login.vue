@@ -18,7 +18,7 @@ function login() {
   }
 
   // fake login check
-  if (username.value === "admin" && password.value === "1234") {
+  if (username.value === "ABC" && password.value === "1234") {
     message.value = "Login Successful 🎉";
     isError.value = false;
 
